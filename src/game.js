@@ -5,8 +5,8 @@ class WhackGame {
     this.combo = 0;
     this.comboTimer = null;
     this.timeLeft = GAME_DURATION;
-    this.speed = SPEEDS.normal;
-    this.difficulty = 'normal';
+    this.speed = { ...SPEEDS.normal };
+    this.baseSpeed = 'normal';
     this.moles = [];
     this.running = false;
     this.countdownInterval = null;
@@ -19,6 +19,7 @@ class WhackGame {
   buildBoard() {
     const board = document.getElementById('board');
     board.innerHTML = '';
+    this.moles = [];
     for (let i = 0; i < HOLE_COUNT; i++) {
       const hole = document.createElement('div');
       hole.className = 'hole';
@@ -29,8 +30,8 @@ class WhackGame {
   }
 
   setDifficulty(d) {
-    this.difficulty = d;
-    this.speed = SPEEDS[d];
+    this.baseSpeed = d;
+    this.speed = { ...SPEEDS[d] };
   }
 
   start() {
@@ -38,6 +39,7 @@ class WhackGame {
     this.combo = 0;
     this.timeLeft = GAME_DURATION;
     this.running = true;
+    this.speed = { ...SPEEDS[this.baseSpeed] };
     this.moles.forEach(m => m.hide());
     document.getElementById('start-screen').classList.add('hidden');
     document.getElementById('end-screen').classList.add('hidden');
@@ -50,6 +52,13 @@ class WhackGame {
     this.countdownInterval = setInterval(() => {
       this.timeLeft--;
       document.getElementById('timer').textContent = this.timeLeft;
+      // speed ramp every 10s
+      if (this.timeLeft > 0 && (GAME_DURATION - this.timeLeft) % 10 === 0) {
+        this.speed.minUp = Math.max(200, this.speed.minUp * 0.85);
+        this.speed.maxUp = Math.max(400, this.speed.maxUp * 0.85);
+        this.speed.minDown = Math.max(150, this.speed.minDown * 0.85);
+        this.speed.maxDown = Math.max(300, this.speed.maxDown * 0.85);
+      }
       if (this.timeLeft <= 0) this.end();
     }, 1000);
   }
@@ -70,7 +79,6 @@ class WhackGame {
 
   onWhack(mole) {
     if (mole.type === '🔫') {
-      // bomb - lose combo and points
       this.score = Math.max(0, this.score - 20);
       this.combo = 0;
       this.showPop(mole.el, '-20', '#e74c3c');
