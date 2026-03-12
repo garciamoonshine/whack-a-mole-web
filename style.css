@@ -1,0 +1,26 @@
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(180deg,#87ceeb 0%,#c8e6a0 60%,#8b6914 100%);min-height:100vh;display:flex;justify-content:center;padding:16px;font-family:'Arial Rounded MT Bold','Arial',sans-serif}
+#app{width:100%;max-width:500px;text-align:center}
+h1{font-size:2rem;color:#5d4037;text-shadow:2px 2px 0 #fff;margin-bottom:12px}
+#hud{display:flex;justify-content:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.hud-item{background:rgba(255,255,255,.8);border-radius:10px;padding:8px 16px;min-width:70px}
+.lbl{display:block;font-size:0.6rem;color:#888;letter-spacing:2px}
+.hud-item span:last-child{font-size:1.4rem;font-weight:bold;color:#e74c3c}
+#board{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.hole{position:relative;height:100px;background:radial-gradient(ellipse,#5d4037 60%,#3e2723);border-radius:50%;overflow:hidden;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.4);transition:transform .1s}
+.hole:active{transform:scale(.95)}
+.mole{position:absolute;bottom:-100%;left:50%;transform:translateX(-50%);font-size:3rem;transition:bottom .15s ease;line-height:1;user-select:none}
+.mole.up{bottom:0}
+.mole.whacked{bottom:0;animation:whack .2s ease forwards}
+@keyframes whack{0%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.4) rotate(20deg)}100%{transform:translateX(-50%) scale(0) rotate(40deg)}}
+#start-screen,#end-screen{background:rgba(255,255,255,.9);border-radius:16px;padding:24px}
+#start-screen.hidden,#end-screen.hidden{display:none}
+#diff-btns{display:flex;gap:8px;justify-content:center;margin:12px 0}
+button{background:#e74c3c;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:0.9rem;cursor:pointer;font-weight:bold;transition:background .2s}
+button:hover,button.active{background:#c0392b}
+#start-btn{margin-top:8px;font-size:1.1rem;padding:12px 32px;background:#27ae60}
+#start-btn:hover{background:#219a52}
+#end-screen h2{color:#e74c3c;font-size:1.8rem;margin-bottom:8px}
+#final-score{color:#555;margin-bottom:16px;font-size:1rem}
+.score-pop{position:absolute;pointer-events:none;font-size:1.2rem;font-weight:bold;color:#fff;text-shadow:1px 1px 2px #333;animation:floatUp .8s ease forwards;z-index:10}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-60px)}}
